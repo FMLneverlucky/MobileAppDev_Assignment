@@ -13,13 +13,18 @@
         android:theme="@style/Theme.Assignment"
         tools:targetApi="31">
 
-        <activity android:name="com.example.assignment.mainMenu"
+        <activity android:name="com.example.assignment.edits.mainMenu"
             android:exported="true"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+
+        <activity android:name=".mgp2d.core.GameActivity"
+            android:exported="true"
+            android:screenOrientation="landscape">
         </activity>
     </application>
 </manifest>

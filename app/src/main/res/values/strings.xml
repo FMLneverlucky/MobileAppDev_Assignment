@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Assignment</string>
     <string name="MainMenuText">menuPage</string>
+    <string name="StartButton">Start</string>
 </resources>

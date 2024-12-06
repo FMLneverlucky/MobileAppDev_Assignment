@@ -16,7 +16,7 @@ public abstract class GameEntity {
 
     public void onUpdate(float dt) {}
 
-    public abstract void onUpdate()
+    public abstract void onUpdate();
 
     public abstract void onRender(Canvas canvas);
 }

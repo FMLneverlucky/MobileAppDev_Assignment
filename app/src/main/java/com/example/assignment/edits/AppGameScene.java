@@ -24,14 +24,18 @@ public class AppGameScene extends GameScene {
         int screenHeight = GameActivity.instance.getResources().getDisplayMetrics().heightPixels;
         Bitmap BackgroundBitmap = BitmapFactory.decodeResource(GameActivity.instance.getResources(), R.drawable.kyuu_pic);
         _backgroundBitmap = Bitmap.createScaledBitmap(BackgroundBitmap, screenWidth, screenHeight, true);
+        _gameEntities.add(new ItemEntity());
     }
     @Override
     public void onUpdate(float dt) {
-
+        for (GameEntity entity :_gameEntities)
+            entity.onUpdate(dt);
     }
 
     @Override
     public void onRender(Canvas canvas) {
         canvas.drawBitmap(_backgroundBitmap,0,0,null);
+        for (GameEntity entity :_gameEntities)
+            entity.onRender(canvas);
     }
 }

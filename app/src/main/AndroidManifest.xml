@@ -15,7 +15,7 @@
 
         <activity android:name="com.example.assignment.edits.mainMenu"
             android:exported="true"
-            android:screenOrientation="landscape">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -24,7 +24,7 @@
 
         <activity android:name=".mgp2d.core.GameActivity"
             android:exported="true"
-            android:screenOrientation="landscape">
+            android:screenOrientation="portrait">
         </activity>
     </application>
 </manifest>

@@ -15,5 +15,8 @@ public abstract class GameEntity {
     public boolean canDestroy() { return _isDone; }
 
     public void onUpdate(float dt) {}
+
+    public abstract void onUpdate()
+
     public abstract void onRender(Canvas canvas);
 }

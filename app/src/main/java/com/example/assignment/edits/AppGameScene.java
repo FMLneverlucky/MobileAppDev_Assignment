@@ -9,10 +9,14 @@ import androidx.annotation.ColorInt;
 
 import com.example.assignment.R;
 import com.example.assignment.mgp2d.core.GameActivity;
+import com.example.assignment.mgp2d.core.GameEntity;
 import com.example.assignment.mgp2d.core.GameScene;
+
+import java.util.Vector;
 
 public class AppGameScene extends GameScene {
     private Bitmap _backgroundBitmap;
+    Vector<GameEntity> _gameEntities = new Vector<>();
     @Override
     public void onCreate(){
         super.onCreate();

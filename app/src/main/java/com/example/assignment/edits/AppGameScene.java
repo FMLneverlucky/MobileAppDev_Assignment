@@ -1,9 +1,12 @@
 package com.example.assignment.edits;
 
+import android.app.GameManager;
+import android.app.GameState;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.view.MotionEvent;
 
 import androidx.annotation.ColorInt;
 
@@ -29,7 +32,8 @@ public class AppGameScene extends GameScene {
     @Override
     public void onUpdate(float dt) {
         for (GameEntity entity :_gameEntities)
-            entity.onUpdate(dt);
+            entity.onUpdate();
+
     }
 
     @Override

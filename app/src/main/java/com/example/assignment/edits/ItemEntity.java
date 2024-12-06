@@ -11,7 +11,7 @@ import com.example.assignment.mgp2d.core.GameActivity;
 import com.example.assignment.mgp2d.core.GameEntity;
 import com.example.assignment.mgp2d.core.Vector2;
 
-public class ItemEntity extends GameEntity {
+public class ItemEntity extends GameEntity{
     private final Bitmap Sprite; //final keyword used when  data member assigned only at one place -> this case: in constructor
     //_position x and y can be accessed from parent class because this is child of gameEntity
     private final Rect _srcRect;    //source rectangle -> covers the relevant area in sprite image (in context of animated sprite)
@@ -39,8 +39,8 @@ public class ItemEntity extends GameEntity {
 
         //pointer stuff
         currentPointerID = -1;  //game start state, so set to -1 for no touch detected; i cant believe it took me an hour to figure this out O|<
+        position = new Vector2(0, 0);
         //create joystick bitmap and render???
-
     }
 
     @Override

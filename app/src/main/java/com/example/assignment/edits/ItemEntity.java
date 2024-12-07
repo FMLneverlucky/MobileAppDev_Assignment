@@ -4,10 +4,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.util.Log;
 
 import com.example.assignment.R;
 import com.example.assignment.mgp2d.core.GameActivity;
 import com.example.assignment.mgp2d.core.GameEntity;
+import com.example.assignment.mgp2d.core.Vector2;
 
 public class ItemEntity extends GameEntity{
     private final Bitmap Sprite; //final keyword used when  data member assigned only at one place -> this case: in constructor
@@ -15,6 +17,7 @@ public class ItemEntity extends GameEntity{
     private final Rect _srcRect;    //source rectangle -> covers the relevant area in sprite image (in context of animated sprite)
     private final Rect _dstRect;    //destination rectangle -> rectangle that reside in screen
 
+    private Vector2 pointerFlickDirection = new Vector2(0, 0);
     public ItemEntity(){
         //spawn position
         _position.x = (float)GameActivity.instance.getResources().getDisplayMetrics().widthPixels / 2;
@@ -42,5 +45,14 @@ public class ItemEntity extends GameEntity{
         _dstRect.right = (int)_position.x + Sprite.getWidth() /2;
         _dstRect.bottom = (int)_position.y + Sprite.getHeight()/2;
         canvas.drawBitmap(Sprite, _srcRect, _dstRect, null);
+    }
+
+    @Override
+    public String getEntityClass() {
+        return "ItemEntity";
+    }
+    public void receiveFlickDirection(Vector2 directionVector){
+        pointerFlickDirection = directionVector;
+        Log.d("RECIEVED", "flick direction received");  //debugging dont mind me
     }
 }

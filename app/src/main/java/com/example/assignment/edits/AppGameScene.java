@@ -27,9 +27,14 @@ public class AppGameScene extends GameScene {
     @Override
     public void onUpdate(float dt) {
         pointerUpdate();
-        for (GameEntity entity :_gameEntities)
+        for (GameEntity entity :_gameEntities) {
+            //toss flick direction to item update for position update
+            if (entity.getEntityClass().equals("ItemEntity"))
+            {
+                ((ItemEntity)entity).receiveFlickDirection(getFlickDirection());    //looks scuffed, taken from stack overflow O|<
+            }
             entity.onUpdate();
-
+        }
     }
 
     @Override

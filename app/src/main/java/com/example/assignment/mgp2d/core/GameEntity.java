@@ -19,4 +19,6 @@ public abstract class GameEntity {
     public abstract void onUpdate();
 
     public abstract void onRender(Canvas canvas);
+
+    public abstract String getEntityClass();
 }

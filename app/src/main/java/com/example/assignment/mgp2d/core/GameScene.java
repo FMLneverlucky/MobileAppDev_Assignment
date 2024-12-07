@@ -54,7 +54,9 @@ public abstract class GameScene {
 
     private boolean _isCreated = false;
     protected int _currentPointerID = -1; //start detecting touch when enter a scene, every scene should have a touch detector -> i mean there's event listeners but since this exists might as well use it
-    private Vector2 pointerPosition = new Vector2(0, 0);
+    private Vector2 initial_pointerPosition = new Vector2(0, 0);    //touch detect
+    private Vector2 final_pointerPosition = new Vector2(0, 0);  //touch release
+    protected Vector2 flickDirection = new Vector2(0, 0);
     private Bitmap pointerBmp;
     public void onCreate() {
         _isCreated = true;
@@ -80,20 +82,22 @@ public abstract class GameScene {
         if (_currentPointerID == -1 && (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_POINTER_DOWN))
         {
             _currentPointerID = pointerID;   //touch has been detected, tie touch reference in index to start of touch detection list
+            initial_pointerPosition.x =  motionEvent.getX();
+            initial_pointerPosition.y = motionEvent.getY();
         }
-        else if (_currentPointerID == pointerID && (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_DOWN))
+        else if (_currentPointerID == pointerID && (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP))
         {
             _currentPointerID = -1;  //touch release or no multiple touch detected, reset pointer reference
+            calculateDirectionVector(); //pass it somewhere idk, item will need to update position
         }
         if (_currentPointerID != -1)
         {
             for (int i = 0; i < motionEvent.getPointerCount(); i++)
             {
                 if (motionEvent.getPointerId(i) != _currentPointerID) continue;
-                else {
-                    pointerPosition.x = motionEvent.getPointerId(i);
-                    pointerPosition.y = motionEvent.getPointerId(i);
-                }
+                //else {
+                    //ooga booga what do when theres a touch -> maybe handle touch events here using timer; how long user hold tap/ how long until next tap
+                //}
             }
         }
 
@@ -108,5 +112,19 @@ public abstract class GameScene {
         //i could technically use interface and implement for this pointer thing, but i never actually made a working one before and i dont dare kek
     }
 
+    public void calculateDirectionVector()
+    {
+        Vector2 directionVector = new Vector2(0, 0);
+        directionVector = initial_pointerPosition.add(final_pointerPosition); //a to b vector so use add
+        flickDirection = directionVector;
+        //need to normalize direction vector into number for update
+    }
+
+    public Vector2 getFlickDirection() {
+        if (flickDirection.x != 0 && flickDirection.y != 0)
+          return flickDirection;
+
+        return new Vector2(0, 0); //default value if flick direction not calculated yet
+    }
     //endregion
 }

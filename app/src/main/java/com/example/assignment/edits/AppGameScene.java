@@ -1,12 +1,9 @@
 package com.example.assignment.edits;
 
-import android.app.GameManager;
-import android.app.GameState;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.view.MotionEvent;
 
 import androidx.annotation.ColorInt;
 
@@ -28,9 +25,11 @@ public class AppGameScene extends GameScene {
         Bitmap BackgroundBitmap = BitmapFactory.decodeResource(GameActivity.instance.getResources(), R.drawable.kyuu_pic);
         _backgroundBitmap = Bitmap.createScaledBitmap(BackgroundBitmap, screenWidth, screenHeight, true);
         _gameEntities.add(new ItemEntity());
+        _gameEntities.add(new TextRender(14117033, _currentPointerID));
     }
     @Override
     public void onUpdate(float dt) {
+        pointerUpdate();
         for (GameEntity entity :_gameEntities)
             entity.onUpdate();
 
@@ -39,6 +38,7 @@ public class AppGameScene extends GameScene {
     @Override
     public void onRender(Canvas canvas) {
         canvas.drawBitmap(_backgroundBitmap,0,0,null);
+        renderPointer(canvas);
         for (GameEntity entity :_gameEntities)
             entity.onRender(canvas);
     }

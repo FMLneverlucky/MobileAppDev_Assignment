@@ -3,9 +3,6 @@ package com.example.assignment.edits;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-
-import androidx.annotation.ColorInt;
 
 import com.example.assignment.R;
 import com.example.assignment.mgp2d.core.GameActivity;

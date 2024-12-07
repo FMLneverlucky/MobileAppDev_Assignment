@@ -4,12 +4,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.view.MotionEvent;
 
 import com.example.assignment.R;
 import com.example.assignment.mgp2d.core.GameActivity;
 import com.example.assignment.mgp2d.core.GameEntity;
-import com.example.assignment.mgp2d.core.Vector2;
 
 public class ItemEntity extends GameEntity{
     private final Bitmap Sprite; //final keyword used when  data member assigned only at one place -> this case: in constructor

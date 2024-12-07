@@ -14,9 +14,9 @@ public abstract class GameEntity {
     public void destroy() { _isDone = true; }
     public boolean canDestroy() { return _isDone; }
 
-    public void onUpdate(float dt) {}
+    public void onUpdate() {}
 
-    public abstract void onUpdate();
+    public abstract void onUpdate(float dt);    //why wasnt it the abstract with float dt @_@
 
     public abstract void onRender(Canvas canvas);
 

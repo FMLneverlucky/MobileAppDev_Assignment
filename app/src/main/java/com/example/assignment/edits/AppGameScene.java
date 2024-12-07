@@ -33,7 +33,7 @@ public class AppGameScene extends GameScene {
             {
                 ((ItemEntity)entity).receiveFlickDirection(getFlickDirection());    //looks scuffed, taken from stack overflow O|<
             }
-            entity.onUpdate();
+            entity.onUpdate(dt);
         }
     }
 

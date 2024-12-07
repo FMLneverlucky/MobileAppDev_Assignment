@@ -87,6 +87,8 @@ public abstract class GameScene {
         }
         else if (_currentPointerID == pointerID && (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP))
         {
+            final_pointerPosition.x =  motionEvent.getX();
+            final_pointerPosition.y = motionEvent.getY();
             _currentPointerID = -1;  //touch release or no multiple touch detected, reset pointer reference
             calculateDirectionVector(); //pass it somewhere idk, item will need to update position
         }
@@ -114,9 +116,7 @@ public abstract class GameScene {
 
     public void calculateDirectionVector()
     {
-        Vector2 directionVector = new Vector2(0, 0);
-        directionVector = initial_pointerPosition.add(final_pointerPosition); //a to b vector so use add
-        flickDirection = directionVector;
+        flickDirection = initial_pointerPosition.add(final_pointerPosition); //a to b vector so use add
         //need to normalize direction vector into number for update
     }
 

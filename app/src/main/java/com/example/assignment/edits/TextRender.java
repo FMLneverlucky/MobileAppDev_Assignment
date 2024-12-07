@@ -22,7 +22,7 @@ public class TextRender extends GameEntity {
         pointerAction = pAction;
     }
     @Override
-    public void onUpdate() {
+    public void onUpdate(float dt) {
         MotionEvent motionChecker = GameActivity.instance.getMotionEvent();
 
         if (motionChecker == null) return;
@@ -31,6 +31,7 @@ public class TextRender extends GameEntity {
             pointerAction = -1; //reset whenever lift finger
         else //always track pointer action (no touch already handled to step out earlier)
             pointerAction = GameActivity.instance.getMotionEvent().getActionMasked();
+        //pretty sure this is redundant since theres exact same code in game scene, but leaving it just in case theres dependency i havent realised yet
     }
 
     @Override

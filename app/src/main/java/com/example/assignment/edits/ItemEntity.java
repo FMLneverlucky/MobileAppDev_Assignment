@@ -16,13 +16,14 @@ public class ItemEntity extends GameEntity{
     //_position x and y can be accessed from parent class because this is child of gameEntity
     private final Rect _srcRect;    //source rectangle -> covers the relevant area in sprite image (in context of animated sprite)
     private final Rect _dstRect;    //destination rectangle -> rectangle that reside in screen
-
     private Vector2 pointerFlickDirection = new Vector2(0, 0);
+
+    private static final int speed = 50; //speed of position update
+
+    private final Vector2 startPosition = new Vector2((float)GameActivity.instance.getResources().getDisplayMetrics().widthPixels / 2, (float)GameActivity.instance.getResources().getDisplayMetrics().heightPixels /2); //will always start and reset at same place
     public ItemEntity(){
         //spawn position
-        _position.x = (float)GameActivity.instance.getResources().getDisplayMetrics().widthPixels / 2;
-        _position.y = (float)GameActivity.instance.getResources().getDisplayMetrics().heightPixels /2;
-
+        _position = startPosition;
         //init sprites for item and pointer
         Bitmap PaperBitmap = BitmapFactory.decodeResource(GameActivity.instance.getResources(), R.drawable.paperball);
         Sprite = Bitmap.createScaledBitmap(PaperBitmap, PaperBitmap.getWidth() /2, PaperBitmap.getHeight() /2, true); //halved size of sprite here
@@ -33,7 +34,21 @@ public class ItemEntity extends GameEntity{
     }
 
     @Override
-    public void onUpdate() {
+    public void onUpdate(float dt) {
+        //update position
+        //pain since want to move in axis but its vector 2 -> to implement normalized direction to check which axis to move
+        //phone display starts at top left corner; increase value in right and down direction
+        //init midpoint of screen to check which ddirection to move -> actually can use start direction since item spawn at middle
+        if (pointerFlickDirection.x > startPosition.x)
+            _position.x -= speed * dt;
+        else if (pointerFlickDirection.x < startPosition.x)
+            _position.x += speed * dt;
+
+        if (pointerFlickDirection.y > startPosition.y)
+            _position.y -= speed * dt;
+        else if (pointerFlickDirection.y < startPosition.y)
+            _position.y += speed * dt;
+        //something about position and vector having different point of origin -> one is top left one is bottom right?? anyways problem here if move in inverse direction
     }
 
     @Override
@@ -53,6 +68,6 @@ public class ItemEntity extends GameEntity{
     }
     public void receiveFlickDirection(Vector2 directionVector){
         pointerFlickDirection = directionVector;
-        Log.d("RECIEVED", "flick direction received");  //debugging dont mind me
+        Log.d("RECEIVED", "flick direction received");  //debugging dont mind me
     }
 }

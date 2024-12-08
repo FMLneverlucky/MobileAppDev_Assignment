@@ -26,10 +26,11 @@ public class ItemEntity extends GameEntity{
         _position = startPosition;
         //init sprites for item and pointer
         Bitmap PaperBitmap = BitmapFactory.decodeResource(GameActivity.instance.getResources(), R.drawable.paperball);
-        Sprite = Bitmap.createScaledBitmap(PaperBitmap, PaperBitmap.getWidth() /2, PaperBitmap.getHeight() /2, true); //halved size of sprite here
+        setSize(new Vector2((float)PaperBitmap.getWidth() /2, (float)PaperBitmap.getHeight() /2));
+        Sprite = Bitmap.createScaledBitmap(PaperBitmap, (int)getSize().x, (int)getSize().y, true); //halved size of sprite here
 
         //below this comment is meant for animated sprite bits (which imm not using ahaaaaaa)
-        _srcRect = new Rect(0, 0, PaperBitmap.getWidth() /2, PaperBitmap.getHeight() /2); //rmb to reduce image size to desired scale here too
+        _srcRect = new Rect(0, 0, (int)getSize().x, (int)getSize().y); //rmb to reduce image size to desired scale here too
         _dstRect = new Rect();
     }
 

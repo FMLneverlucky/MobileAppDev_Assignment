@@ -18,9 +18,9 @@ public class ItemEntity extends GameEntity{
     private final Rect _dstRect;    //destination rectangle -> rectangle that reside in screen
     private Vector2 pointerFlickDirection = new Vector2(0, 0);
 
-    private static final int speed = 50; //speed of position update
+    private static final int speed = 200; //speed of position update
 
-    private final Vector2 startPosition = new Vector2((float)GameActivity.instance.getResources().getDisplayMetrics().widthPixels / 2, (float)GameActivity.instance.getResources().getDisplayMetrics().heightPixels /2); //will always start and reset at same place
+    private final Vector2 startPosition = new Vector2((float)GameActivity.instance.getResources().getDisplayMetrics().widthPixels / 2, (float)GameActivity.instance.getResources().getDisplayMetrics().heightPixels /2); //will always start and reset at same place -> i would static this if i could but its only avaliable for int variables smh, also this fucking piece of shit is somehow updating somewhere im not aware of
     public ItemEntity(){
         //spawn position
         setPosition(startPosition);
@@ -39,20 +39,20 @@ public class ItemEntity extends GameEntity{
     public void onUpdate(float dt) {
         //reset position of item if it reaches any screen boundary
         if (screenBoundaryCollision())
-            _position = startPosition;
+            _position = new Vector2(540, 1088.5f); //i tried to set position back to start position but that fucking variable is receiving position update from god knows where. i seriously have no idea where so im doing the illegal
 
         //update position
         //pain since want to move in axis but its vector 2 -> to implement normalized direction to check which axis to move
         //phone display starts at top left corner; increase value in right and down direction
         //init midpoint of screen to check which ddirection to move -> actually can use start direction since item spawn at middle
-        if (pointerFlickDirection.x > startPosition.x)
+        if (pointerFlickDirection.x > (float)GameActivity.instance.getResources().getDisplayMetrics().widthPixels / 2)
             _position.x -= speed * dt;
-        else if (pointerFlickDirection.x < startPosition.x)
+        else if (pointerFlickDirection.x < (float)GameActivity.instance.getResources().getDisplayMetrics().widthPixels / 2)
             _position.x += speed * dt;
 
-        if (pointerFlickDirection.y > startPosition.y)
+        if (pointerFlickDirection.y > (float)GameActivity.instance.getResources().getDisplayMetrics().heightPixels / 2)
             _position.y -= speed * dt;
-        else if (pointerFlickDirection.y < startPosition.y)
+        else if (pointerFlickDirection.y < (float)GameActivity.instance.getResources().getDisplayMetrics().heightPixels / 2)
             _position.y += speed * dt;
         //something about position and vector having different point of origin -> one is top left one is bottom right?? anyways problem here if move in inverse direction
     }

@@ -23,9 +23,10 @@ public class ItemEntity extends GameEntity{
     private final Vector2 startPosition = new Vector2((float)GameActivity.instance.getResources().getDisplayMetrics().widthPixels / 2, (float)GameActivity.instance.getResources().getDisplayMetrics().heightPixels /2); //will always start and reset at same place
     public ItemEntity(){
         //spawn position
-        _position = startPosition;
-        //init sprites for item and pointer
+        setPosition(startPosition);
+        //init sprite for item
         Bitmap PaperBitmap = BitmapFactory.decodeResource(GameActivity.instance.getResources(), R.drawable.paperball);
+        //want to set to half size of image, so setting size after init image
         setSize(new Vector2((float)PaperBitmap.getWidth() /2, (float)PaperBitmap.getHeight() /2));
         Sprite = Bitmap.createScaledBitmap(PaperBitmap, (int)getSize().x, (int)getSize().y, true); //halved size of sprite here
 
@@ -36,6 +37,10 @@ public class ItemEntity extends GameEntity{
 
     @Override
     public void onUpdate(float dt) {
+        //reset position of item if it reaches any screen boundary
+        if (screenBoundaryCollision())
+            _position = startPosition;
+
         //update position
         //pain since want to move in axis but its vector 2 -> to implement normalized direction to check which axis to move
         //phone display starts at top left corner; increase value in right and down direction
@@ -70,5 +75,27 @@ public class ItemEntity extends GameEntity{
     public void receiveFlickDirection(Vector2 directionVector){
         pointerFlickDirection = directionVector;
         Log.d("RECEIVED", "flick direction received");  //debugging dont mind me
+    }
+
+    protected boolean screenBoundaryCollision()
+    {
+        //returns false by default unless item reaches screen boundary
+        //left boundary
+        if (_dstRect.left < 0)  //since already changed image pivot to be centered when first init, might as well maximize usage
+            return true;
+        //right boundary
+        if (_dstRect.right > GameActivity.instance.getResources().getDisplayMetrics().widthPixels)
+            return true;
+        //top boundary
+        if (_dstRect.top < 0)
+            return true;
+        //bottom boundary
+        if (_dstRect.bottom > GameActivity.instance.getResources().getDisplayMetrics().heightPixels)
+            return true;
+
+        //am not using if else since need to check for all sides of screen (SO GO AWAY YELLOW SQUIGGLE)
+
+        //default
+        return false;
     }
 }

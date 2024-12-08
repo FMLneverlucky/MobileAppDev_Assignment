@@ -6,7 +6,9 @@ public abstract class GameEntity {
     protected Vector2 _position = new Vector2(0, 0);
     public Vector2 getPosition() { return _position.copy(); }
     public void setPosition(Vector2 position) { _position = position; }
-
+    protected Vector2 size = new Vector2(0, 0);
+    public Vector2 getSize() {return size.copy();}
+    public void setSize(Vector2 newsize) {size = newsize;}
     protected int _ordinal = 0;
     public int getOrdinal() { return _ordinal; }
 

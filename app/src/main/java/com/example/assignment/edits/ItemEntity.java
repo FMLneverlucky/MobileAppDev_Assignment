@@ -9,6 +9,7 @@ import android.util.Log;
 import com.example.assignment.R;
 import com.example.assignment.mgp2d.core.GameActivity;
 import com.example.assignment.mgp2d.core.GameEntity;
+import com.example.assignment.mgp2d.core.GameScene;
 import com.example.assignment.mgp2d.core.Vector2;
 
 public class ItemEntity extends GameEntity{
@@ -16,7 +17,7 @@ public class ItemEntity extends GameEntity{
     //_position x and y can be accessed from parent class because this is child of gameEntity
     private final Rect _srcRect;    //source rectangle -> covers the relevant area in sprite image (in context of animated sprite)
     private final Rect _dstRect;    //destination rectangle -> rectangle that reside in screen
-    private Vector2 pointerFlickDirection = new Vector2(0, 0);
+    private GameScene.flickDirection pointerFlickDirection = GameScene.flickDirection.NONE;  //i cant exactly call a game scene protected variable here, so jus switch case the enum passed in as a diff data type -> changed function to public since its a pain in the ass, also going to be repetitive to keep declaring different methods in every class (context: was a string type before change)
 
     private static final int speed = 200; //speed of position update
 
@@ -45,6 +46,8 @@ public class ItemEntity extends GameEntity{
         //pain since want to move in axis but its vector 2 -> to implement normalized direction to check which axis to move
         //phone display starts at top left corner; increase value in right and down direction
         //init midpoint of screen to check which ddirection to move -> actually can use start direction since item spawn at middle
+        //TODO: CHANGE POINTERFLICKDIRECTION TO ENUM (also consider using switch case here)
+        /*
         if (pointerFlickDirection.x > (float)GameActivity.instance.getResources().getDisplayMetrics().widthPixels / 2)
             _position.x -= speed * dt;
         else if (pointerFlickDirection.x < (float)GameActivity.instance.getResources().getDisplayMetrics().widthPixels / 2)
@@ -54,6 +57,25 @@ public class ItemEntity extends GameEntity{
             _position.y -= speed * dt;
         else if (pointerFlickDirection.y < (float)GameActivity.instance.getResources().getDisplayMetrics().heightPixels / 2)
             _position.y += speed * dt;
+         */
+
+        switch (pointerFlickDirection)
+        {
+            case LEFT: //none
+                _position.x -= speed * dt;
+                return;
+            case RIGHT:
+                _position.x += speed * dt;
+                return;
+            case UP:
+                _position.y -= speed * dt;
+                return;
+            case DOWN:
+                _position.y += speed * dt;
+                return;
+            default:
+
+        }
         //something about position and vector having different point of origin -> one is top left one is bottom right?? anyways problem here if move in inverse direction
     }
 
@@ -72,8 +94,8 @@ public class ItemEntity extends GameEntity{
     public String getEntityClass() {
         return "ItemEntity";
     }
-    public void receiveFlickDirection(Vector2 directionVector){
-        pointerFlickDirection = directionVector;
+    public void receiveFlickDirection(GameScene.flickDirection direction){ //to be changed: vector 2 to enum
+        pointerFlickDirection = direction;
         Log.d("RECEIVED", "flick direction received");  //debugging dont mind me
     }
 

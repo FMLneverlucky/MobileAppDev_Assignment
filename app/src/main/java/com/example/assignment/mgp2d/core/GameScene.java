@@ -56,12 +56,20 @@ public abstract class GameScene {
     protected int _currentPointerID = -1; //start detecting touch when enter a scene, every scene should have a touch detector -> i mean there's event listeners but since this exists might as well use it
     private Vector2 initial_pointerPosition = new Vector2(0, 0);    //touch detect
     private Vector2 final_pointerPosition = new Vector2(0, 0);  //touch release
-    protected Vector2 flickDirection = new Vector2(0, 0);
+    public enum flickDirection{
+        NONE,
+        LEFT,
+        RIGHT,
+        UP,
+        DOWN
+    }
+    public flickDirection currentDirection; //to store pointer flick direction
     private Bitmap pointerBmp;
     public void onCreate() {
         _isCreated = true;
         Bitmap PointerBitmap = BitmapFactory.decodeResource(GameActivity.instance.getResources(), R.drawable.circle);
         pointerBmp = Bitmap.createScaledBitmap(PointerBitmap, PointerBitmap.getWidth(), PointerBitmap.getHeight(), true);
+        currentDirection = flickDirection.NONE;
     }
     public void onEnter() { if (!_isCreated) onCreate(); }
     public abstract void onUpdate(float dt);
@@ -90,7 +98,7 @@ public abstract class GameScene {
             final_pointerPosition.x =  motionEvent.getX();
             final_pointerPosition.y = motionEvent.getY();
             _currentPointerID = -1;  //touch release or no multiple touch detected, reset pointer reference
-            calculateDirectionVector(); //pass it somewhere idk, item will need to update position
+            determineFlickDirection(); //pass it somewhere idk, item will need to update position
         }
         if (_currentPointerID != -1)
         {
@@ -114,17 +122,29 @@ public abstract class GameScene {
         //i could technically use interface and implement for this pointer thing, but i never actually made a working one before and i dont dare kek
     }
 
-    public void calculateDirectionVector()
+    public void determineFlickDirection()
     {
-        flickDirection = initial_pointerPosition.add(final_pointerPosition); //a to b vector so use add
-        //need to normalize direction vector into number for update
+        Vector2 pointerPositionChange = final_pointerPosition.subtract(initial_pointerPosition);
+        if (Math.abs(pointerPositionChange.x) > Math.abs(pointerPositionChange.y))  //using absolute so value compared will always be positive to determine more accurately which way player swiped/flicked
+        {
+            //flick left or right
+            //if pointer start at left and release on right, x of position change will be negative
+            if (pointerPositionChange.x > 0)
+                currentDirection = flickDirection.RIGHT;
+            else if (pointerPositionChange.x < 0)
+                currentDirection = flickDirection.LEFT;
+        }
+        else if (Math.abs(pointerPositionChange.y) > Math.abs(pointerPositionChange.x))
+        {
+            //flick up or down
+            //if pointer starts above and release below, y of position change will be negative
+            if (pointerPositionChange.y < 0)
+                currentDirection = flickDirection.UP;
+            else if (pointerPositionChange.y > 0)
+                currentDirection = flickDirection.DOWN;
+        }
     }
 
-    public Vector2 getFlickDirection() {
-        if (flickDirection.x != 0 && flickDirection.y != 0)
-          return flickDirection;
-
-        return new Vector2(0, 0); //default value if flick direction not calculated yet
-    }
+    public flickDirection getFlickDirection() {return currentDirection;}
     //endregion
 }

@@ -31,7 +31,7 @@ public class AppGameScene extends GameScene {
             //toss flick direction to item update for position update
             if (entity.getEntityClass().equals("ItemEntity"))
             {
-                ((ItemEntity)entity).receiveFlickDirection(getFlickDirection());    //looks scuffed, taken from stack overflow O|<
+                ((ItemEntity)entity).receiveFlickDirection(getFlickDirection());    //looks scuffed, taken from stack overflow O|< -> error because receive takes in vector 2, change receive function parameter to enum
             }
             entity.onUpdate(dt);
         }

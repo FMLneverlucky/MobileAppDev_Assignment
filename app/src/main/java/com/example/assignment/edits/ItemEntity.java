@@ -14,19 +14,18 @@ import com.example.assignment.mgp2d.core.Vector2;
 
 public class ItemEntity extends GameEntity{
     private final Bitmap Sprite; //final keyword used when  data member assigned only at one place -> this case: in constructor
-    //_position x and y can be accessed from parent class because this is child of gameEntity
+    //_position x and y can be accessed from parent class because this is child of gameEntity                    j
     private final Rect _srcRect;    //source rectangle -> covers the relevant area in sprite image (in context of animated sprite)
     private final Rect _dstRect;    //destination rectangle -> rectangle that reside in screen
     private GameScene.flickDirection pointerFlickDirection = GameScene.flickDirection.NONE;  //i cant exactly call a game scene protected variable here, so jus switch case the enum passed in as a diff data type -> changed function to public since its a pain in the ass, also going to be repetitive to keep declaring different methods in every class (context: was a string type before change)
-    protected boolean get_direction = true; //when start, direction is none, so allow receiving of direction from game scene class
-    private static final int speed = 200; //speed of position update
+    private static final int speed = 400; //speed of position update
 
     private final Vector2 startPosition = new Vector2((float)GameActivity.instance.getResources().getDisplayMetrics().widthPixels / 2, (float)GameActivity.instance.getResources().getDisplayMetrics().heightPixels /2); //will always start and reset at same place -> i would static this if i could but its only avaliable for int variables smh, also this fucking piece of shit is somehow updating somewhere im not aware of
     public ItemEntity(){
         //spawn position
         setPosition(startPosition);
         //init sprite for item
-        Bitmap PaperBitmap = BitmapFactory.decodeResource(GameActivity.instance.getResources(), R.drawable.paperball);
+        Bitmap PaperBitmap = BitmapFactory.decodeResource(GameActivity.instance.getResources(), R.drawable.paperball);  //replace with default sprite thats not paper ball to make sure this class manages to init child items; in other words, for debugging
         //want to set to half size of image, so setting size after init image
         setSize(new Vector2((float)PaperBitmap.getWidth() /2, (float)PaperBitmap.getHeight() /2));
         Sprite = Bitmap.createScaledBitmap(PaperBitmap, (int)getSize().x, (int)getSize().y, true); //halved size of sprite here
@@ -45,7 +44,8 @@ public class ItemEntity extends GameEntity{
             _position = new Vector2((float) GameActivity.instance.getResources().getDisplayMetrics().widthPixels / 2, (float) GameActivity.instance.getResources().getDisplayMetrics().heightPixels / 2); //makiing it so it resets to center on different device
             //want to make it so that item can only move in one direction until reset -> reset item direction here
             pointerFlickDirection = GameScene.flickDirection.NONE;
-            get_direction = true; //allow setting of direction again
+            //reset game scene flick direction so when item reset position here, wont take in old direction
+            GameScene.getCurrent().reset_flickDirection();
         }
 
         //update position
@@ -69,6 +69,11 @@ public class ItemEntity extends GameEntity{
             }
         }
         //something about position and vector having different point of origin -> one is top left one is bottom right?? anyways problem here if move in inverse direction
+        else if (pointerFlickDirection == GameScene.flickDirection.NONE)
+        {
+            GameScene currentScene = GameScene.getCurrent();
+            receiveFlickDirection(currentScene.getFlickDirection());
+        }
     }
 
     @Override
@@ -88,11 +93,7 @@ public class ItemEntity extends GameEntity{
     }
     public void receiveFlickDirection(GameScene.flickDirection direction){ //to be changed: vector 2 to enum
         pointerFlickDirection = direction;
-        //Log.d("RECEIVED", "flick direction received");  //debugging dont mind me
-        get_direction = false;  //bool solely to stop flick direction variable above from getting updates O|<; "i already got the direction to go, so dont change my route"
     }
-
-    public boolean get_direction_permit() {return get_direction;} //idk anymore
 
     protected boolean screenBoundaryCollision()
     {
@@ -114,5 +115,10 @@ public class ItemEntity extends GameEntity{
 
         //default
         return false;
+    }
+
+    protected void get_ItemEnum(singleType.ID type)
+    {
+        //get item bitmap, size and other stuff
     }
 }

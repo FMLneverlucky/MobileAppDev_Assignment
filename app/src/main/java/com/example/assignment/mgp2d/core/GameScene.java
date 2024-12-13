@@ -147,4 +147,9 @@ public abstract class GameScene {
 
     public flickDirection getFlickDirection() {return currentDirection;}
     //endregion
+
+    public void reset_flickDirection()
+    {
+        currentDirection = flickDirection.NONE;
+    }
 }

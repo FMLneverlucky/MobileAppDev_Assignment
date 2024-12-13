@@ -29,12 +29,13 @@ public class AppGameScene extends GameScene {
         pointerUpdate();
         for (GameEntity entity :_gameEntities) {
             //toss flick direction to item update for position update
+            /*
             if (entity.getEntityClass().equals("ItemEntity"))    //if entity list is current an item entity
             {
                 if (((ItemEntity)entity).get_direction_permit()) //is allowing receiving of flick direction
                     ((ItemEntity)entity).receiveFlickDirection(getFlickDirection());    //looks scuffed, taken from stack overflow O|< -> error because receive takes in vector 2, change receive function parameter to enum
                 //current bug: when app starts, runs receive flick direction since get_direction is true by default. but since item doesnt actually update and hit screen boundary, get_direction is never reset to true and remains stuck at false state
-            }
+            }*/
             entity.onUpdate(dt);
         }
     }

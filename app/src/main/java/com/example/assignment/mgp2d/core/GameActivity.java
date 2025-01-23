@@ -134,6 +134,7 @@ public class GameActivity extends FragmentActivity {
         SurfaceView surfaceView = new SurfaceView(this);
         setContentView(surfaceView);
         _updateThread = new UpdateThread(surfaceView);
+        currentDirection = flickDirection.NONE;
     }
 
     @Override
@@ -161,5 +162,97 @@ public class GameActivity extends FragmentActivity {
         super.onPause();
         _updateThread.terminate();
         GameScene.exitCurrent();
+    }
+
+    protected int _currentPointerID = -1; //start detecting touch when enter a scene, every scene should have a touch detector -> i mean there's event listeners but since this exists might as well use it
+    //pointers is all part of motionEvent class, which is a singleton. having pointer count here means theres no need to make multiple pointer counters in different scenes
+
+    //in case need reference from other class, making a pointer count getter here
+    public int getPointerCount() {return _currentPointerID;}
+    private Vector2 initial_pointerPosition = new Vector2(0, 0);    //touch detect
+    private Vector2 final_pointerPosition = new Vector2(0, 0);  //touch release
+    public enum flickDirection{
+        NONE,
+        LEFT,
+        RIGHT,
+        UP,
+        DOWN
+    }
+    public flickDirection currentDirection; //to store pointer flick direction
+    public void pointerUpdate()
+    {
+        //to be called in every scene update to track touch detection, put it here because abstract and i dont want to mess up working codes as much as possible
+        MotionEvent motionEvent = getMotionEvent();
+
+        if (motionEvent == null) return;
+
+        int action = motionEvent.getActionMasked();
+        int actionIndex = motionEvent.getActionIndex();
+        int pointerID = motionEvent.getPointerId(actionIndex);  //this bit seems a bit redundant in some way not its in game activity, but i dont dare touch ' -'
+
+        //i rly want to shift this entire bit into another class to act as a singleton for entire app but can only include 1 class ugh -> i totally didnt forget this is an abstract class, where is app run again O|<
+        //ahahhahahaha turns out there isnt rly another class encapsulating the entire thing to run as an app (well i guess thats android manifest but its xml file :/). i guess i will need to stick to having a singleton controller running within game activity instead.
+        //game activity is a public class so technically, i could just toss this entire bit into that class and call it from children of game scene
+
+        if (_currentPointerID == -1 && (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_POINTER_DOWN))
+        {
+            _currentPointerID = pointerID;   //touch has been detected, tie touch reference in index to start of touch detection list
+            initial_pointerPosition.x =  motionEvent.getX();
+            initial_pointerPosition.y = motionEvent.getY();
+        }
+        else if (_currentPointerID == pointerID && (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP))
+        {
+            final_pointerPosition.x =  motionEvent.getX();
+            final_pointerPosition.y = motionEvent.getY();
+            _currentPointerID = -1;  //touch release or no multiple touch detected, reset pointer reference
+            determineFlickDirection(); //pass it somewhere idk, item will need to update position
+        }
+        if (_currentPointerID != -1)
+        {
+            for (int i = 0; i < motionEvent.getPointerCount(); i++)
+            {
+                if (motionEvent.getPointerId(i) != _currentPointerID) continue;
+                //else {
+                //ooga booga what do when theres a touch -> maybe handle touch events here using timer; how long user hold tap/ how long until next tap
+                //}
+            }
+        }
+
+    }
+    public void determineFlickDirection()
+    {
+        Vector2 pointerPositionChange = final_pointerPosition.subtract(initial_pointerPosition);
+        if (Math.abs(pointerPositionChange.x) > Math.abs(pointerPositionChange.y))  //using absolute so value compared will always be positive to determine more accurately which way player swiped/flicked
+        {
+            //flick left or right
+            //if pointer start at left and release on right, x of position change will be negative
+            if (pointerPositionChange.x > 0)
+                currentDirection = flickDirection.RIGHT;
+            else if (pointerPositionChange.x < 0)
+                currentDirection = flickDirection.LEFT;
+        }
+        else if (Math.abs(pointerPositionChange.y) > Math.abs(pointerPositionChange.x))
+        {
+            //flick up or down
+            //if pointer starts above and release below, y of position change will be negative
+            if (pointerPositionChange.y < 0)
+                currentDirection = flickDirection.UP;
+            else if (pointerPositionChange.y > 0)
+                currentDirection = flickDirection.DOWN;
+        }
+    }
+
+    public flickDirection getFlickDirection() {return currentDirection;}
+    //endregion
+
+    public void reset_flickDirection()
+    {
+        currentDirection = flickDirection.NONE;
+    }
+
+    //am small braining rn, but since move pointer code to activity, item entity need to change how to set flick direction
+    public void set_flickDirection(flickDirection newDirection)
+    {
+        currentDirection = newDirection;
     }
 }

@@ -22,11 +22,11 @@ public class AppGameScene extends GameScene {
         Bitmap BackgroundBitmap = BitmapFactory.decodeResource(GameActivity.instance.getResources(), R.drawable.kyuu_pic);
         _backgroundBitmap = Bitmap.createScaledBitmap(BackgroundBitmap, screenWidth, screenHeight, true);
         _gameEntities.add(new ItemEntity());
-        _gameEntities.add(new TextRender(14117033, _currentPointerID));
+        _gameEntities.add(new TextRender(14117033, GameActivity.instance.getPointerCount()));
     }
     @Override
     public void onUpdate(float dt) {
-        pointerUpdate();
+        GameActivity.instance.pointerUpdate();
         for (GameEntity entity :_gameEntities) {
             //toss flick direction to item update for position update
             /*

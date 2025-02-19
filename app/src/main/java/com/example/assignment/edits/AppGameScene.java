@@ -5,7 +5,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
 import com.example.assignment.R;
-import com.example.assignment.edits.box.baseBox;
+import com.example.assignment.edits.box.glassBox;
+import com.example.assignment.edits.box.metalBox;
 import com.example.assignment.edits.box.paperBox;
 import com.example.assignment.edits.box.plasticBox;
 import com.example.assignment.mgp2d.core.GameActivity;
@@ -27,6 +28,8 @@ public class AppGameScene extends GameScene {
         _gameEntities.add(new ItemEntity());
         _gameEntities.add(new paperBox());
         _gameEntities.add(new plasticBox());
+        _gameEntities.add(new metalBox());
+        _gameEntities.add(new glassBox());
     }
     @Override
     public void onUpdate(float dt) {

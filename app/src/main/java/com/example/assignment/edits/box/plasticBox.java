@@ -28,12 +28,13 @@ public class plasticBox extends baseBox {
     @Override
     public void onRender(Canvas canvas) {
         super.onRender(canvas);
+        canvas.save();  //want to save initial orientation and position of bitmap before edit
         canvas.rotate(90, getPosition().x, getPosition().y);
         //want to show lesser of bin because screen width too small
         //major important note: when canvas is rotated, x and y axis is also rotated; YES LITERALLY THE ENTIRE ORIENTATION IS ROTATED; so yeah, translate added value to y because y is now inverse x axis and when not rotated, canvas shifted downwards from center
         canvas.translate(0, (float)destRect.top/4);
         canvas.drawBitmap(boxPlastic, destRect.left, destRect.top, null);
         canvas.drawText("plastic", destRect.left + label.getTextSize(), destRect.top + label.getTextSize(), label);
-        //note: origin of draw text is top left of bin sprite
+        canvas.restore();   //return bitmap to original state so values wont be fucked for next rendering object
     }
 }

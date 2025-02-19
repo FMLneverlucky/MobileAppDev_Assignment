@@ -26,6 +26,7 @@ public class AppGameScene extends GameScene {
         Bitmap BackgroundBitmap = BitmapFactory.decodeResource(GameActivity.instance.getResources(), R.drawable.kyuu_pic);
         _backgroundBitmap = Bitmap.createScaledBitmap(BackgroundBitmap, screenWidth, screenHeight, true);
         _gameEntities.add(new ItemEntity());
+        //thrs prob a better way to do tis but brain struggled to render them at intended location already, am not going to squish my brain even more to come out wif hypothetical unreliable bs
         _gameEntities.add(new paperBox());
         _gameEntities.add(new plasticBox());
         _gameEntities.add(new metalBox());
@@ -36,8 +37,7 @@ public class AppGameScene extends GameScene {
         GameActivity.instance.pointerUpdate();
         for (GameEntity entity :_gameEntities) {
             //toss flick direction to item update for position update
-            /*
-            if (entity.getEntityClass().equals("ItemEntity"))    //if entity list is current an item entity
+             /*if (entity.getEntityClass().equals("ItemEntity"))    //if entity list is current an item entity
             {
                 if (((ItemEntity)entity).get_direction_permit()) //is allowing receiving of flick direction
                     ((ItemEntity)entity).receiveFlickDirection(getFlickDirection());    //looks scuffed, taken from stack overflow O|< -> error because receive takes in vector 2, change receive function parameter to enum

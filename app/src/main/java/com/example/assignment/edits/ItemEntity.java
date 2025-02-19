@@ -4,12 +4,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.util.Log;
 
 import com.example.assignment.R;
 import com.example.assignment.mgp2d.core.GameActivity;
 import com.example.assignment.mgp2d.core.GameEntity;
-import com.example.assignment.mgp2d.core.GameScene;
 import com.example.assignment.mgp2d.core.Vector2;
 
 public class ItemEntity extends GameEntity{
@@ -19,12 +17,11 @@ public class ItemEntity extends GameEntity{
     private final Rect _dstRect;    //destination rectangle -> rectangle that reside in screen
     private static final int speed = 400; //speed of position update
 
-    private final Vector2 startPosition = new Vector2((float)GameActivity.instance.getResources().getDisplayMetrics().widthPixels / 2, (float)GameActivity.instance.getResources().getDisplayMetrics().heightPixels /2); //will always start and reset at same place -> i would static this if i could but its only avaliable for int variables smh, also this fucking piece of shit is somehow updating somewhere im not aware of
     public ItemEntity(){
         //spawn position
-        setPosition(startPosition);
+        setPosition(new Vector2((float)GameActivity.instance.getResources().getDisplayMetrics().widthPixels / 2, (float)GameActivity.instance.getResources().getDisplayMetrics().heightPixels /2));
         //init sprite for item
-        Bitmap PaperBitmap = BitmapFactory.decodeResource(GameActivity.instance.getResources(), R.drawable.paperball);  //replace with default sprite thats not paper ball to make sure this class manages to init child items; in other words, for debugging
+        Bitmap PaperBitmap = BitmapFactory.decodeResource(GameActivity.instance.getResources(), R.drawable.default_item_texture);  //replace with default sprite thats not paper ball to make sure this class manages to init child items; in other words, for debugging
         //want to set to half size of image, so setting size after init image
         setSize(new Vector2((float)PaperBitmap.getWidth() /2, (float)PaperBitmap.getHeight() /2));
         Sprite = Bitmap.createScaledBitmap(PaperBitmap, (int)getSize().x, (int)getSize().y, true); //halved size of sprite here
@@ -32,6 +29,7 @@ public class ItemEntity extends GameEntity{
         //below this comment is meant for animated sprite bits (which imm not using ahaaaaaa)
         _srcRect = new Rect(0, 0, (int)getSize().x, (int)getSize().y); //rmb to reduce image size to desired scale here too
         _dstRect = new Rect();
+
     }
 
     @Override
@@ -40,9 +38,9 @@ public class ItemEntity extends GameEntity{
         //possible fixes:
         //reset position of item if it reaches any screen boundary
         if (screenBoundaryCollision()) {
-            _position = new Vector2((float) GameActivity.instance.getResources().getDisplayMetrics().widthPixels / 2, (float) GameActivity.instance.getResources().getDisplayMetrics().heightPixels / 2); //makiing it so it resets to center on different device
+            setPosition(new Vector2((float) GameActivity.instance.getResources().getDisplayMetrics().widthPixels / 2, (float) GameActivity.instance.getResources().getDisplayMetrics().heightPixels / 2)); //making it so it resets to center on different device
             //want to make it so that item can only move in one direction until reset -> reset item direction here
-            GameActivity.instance.set_flickDirection(GameActivity.flickDirection.NONE);
+            //GameActivity.instance.set_flickDirection(GameActivity.flickDirection.NONE);
             //reset game scene flick direction so when item reset position here, wont take in old direction
             GameActivity.instance.reset_flickDirection();
         }
@@ -59,10 +57,10 @@ public class ItemEntity extends GameEntity{
                     _position.x += speed * dt;
                     return;
                 case UP:
-                    _position.y -= speed * dt;
+                    _position.y -= 2 * speed * dt;
                     return;
                 case DOWN:
-                    _position.y += speed * dt;
+                    _position.y += 2 * speed * dt;
                     return;
                 default:
             }
@@ -70,19 +68,18 @@ public class ItemEntity extends GameEntity{
         //something about position and vector having different point of origin -> one is top left one is bottom right?? anyways problem here if move in inverse direction
         else if (GameActivity.instance.getFlickDirection() == GameActivity.flickDirection.NONE)
         {
-            GameScene currentScene = GameScene.getCurrent();
             receiveFlickDirection(GameActivity.instance.getFlickDirection());
         }
     }
 
     @Override
     public void onRender(Canvas canvas){
-        //canvas.drawBitmap(Sprite, _position.x, _position.y, null);
         //initial sprite pivot point is located at top left of image -> want to shift the rectangle containing image until pivot is centered
-        _dstRect.left = (int)_position.x - Sprite.getWidth() /2;
-        _dstRect.top = (int)_position.y - Sprite.getHeight() /2;
-        _dstRect.right = (int)_position.x + Sprite.getWidth() /2;
-        _dstRect.bottom = (int)_position.y + Sprite.getHeight()/2;
+        //note to self: since item will be receiving position updates, destRect needs to calculate new position every frame -> put here since function is ran every frame
+        _dstRect.left = (int)getPosition().x - Sprite.getWidth() /2;
+        _dstRect.top = (int)getPosition().y - Sprite.getHeight() /2;
+        _dstRect.right = (int)getPosition().x + Sprite.getWidth() /2;
+        _dstRect.bottom = (int)getPosition().y + Sprite.getHeight()/2;
         canvas.drawBitmap(Sprite, _srcRect, _dstRect, null);
     }
 
@@ -107,13 +104,11 @@ public class ItemEntity extends GameEntity{
         if (_dstRect.top < 0)
             return true;
         //bottom boundary
-        if (_dstRect.bottom > GameActivity.instance.getResources().getDisplayMetrics().heightPixels)
-            return true;
+        return _dstRect.bottom > GameActivity.instance.getResources().getDisplayMetrics().heightPixels;
 
         //am not using if else since need to check for all sides of screen (SO GO AWAY YELLOW SQUIGGLE)
 
         //default
-        return false;
     }
 
     protected void get_ItemEnum(singleType.ID type)

@@ -1,35 +1,36 @@
 package com.example.assignment.edits;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
-import com.example.assignment.R;
+import com.example.assignment.edits.itemTypes.defaultItem;
+import com.example.assignment.edits.itemTypes.paperItem;
 import com.example.assignment.mgp2d.core.GameActivity;
 import com.example.assignment.mgp2d.core.GameEntity;
 import com.example.assignment.mgp2d.core.Vector2;
 
+import com.example.assignment.edits.itemTypes.ItemType;
+
+import java.util.Random;
+
 public class ItemEntity extends GameEntity{
-    private final Bitmap Sprite; //final keyword used when  data member assigned only at one place -> this case: in constructor
-    //_position x and y can be accessed from parent class because this is child of gameEntity                    j
+
     private final Rect _srcRect;    //source rectangle -> covers the relevant area in sprite image (in context of animated sprite)
     private final Rect _dstRect;    //destination rectangle -> rectangle that reside in screen
     private static final int speed = 400; //speed of position update
+    private ItemType item = null;
+
+    ItemType.ID[] numItems = ItemType.ID.values();
+    Random random = new Random();
+    private int randomType;
 
     public ItemEntity(){
         //spawn position
         setPosition(new Vector2((float)GameActivity.instance.getResources().getDisplayMetrics().widthPixels / 2, (float)GameActivity.instance.getResources().getDisplayMetrics().heightPixels /2));
-        //init sprite for item
-        Bitmap PaperBitmap = BitmapFactory.decodeResource(GameActivity.instance.getResources(), R.drawable.default_item_texture);  //replace with default sprite thats not paper ball to make sure this class manages to init child items; in other words, for debugging
-        //want to set to half size of image, so setting size after init image
-        setSize(new Vector2((float)PaperBitmap.getWidth() /2, (float)PaperBitmap.getHeight() /2));
-        Sprite = Bitmap.createScaledBitmap(PaperBitmap, (int)getSize().x, (int)getSize().y, true); //halved size of sprite here
 
         //below this comment is meant for animated sprite bits (which imm not using ahaaaaaa)
-        _srcRect = new Rect(0, 0, (int)getSize().x, (int)getSize().y); //rmb to reduce image size to desired scale here too
+        _srcRect = new Rect(); //rmb to reduce image size to desired scale here too
         _dstRect = new Rect();
-
     }
 
     @Override
@@ -43,6 +44,7 @@ public class ItemEntity extends GameEntity{
             //GameActivity.instance.set_flickDirection(GameActivity.flickDirection.NONE);
             //reset game scene flick direction so when item reset position here, wont take in old direction
             GameActivity.instance.reset_flickDirection();
+            item = null;
         }
 
         //update position
@@ -70,17 +72,34 @@ public class ItemEntity extends GameEntity{
         {
             receiveFlickDirection(GameActivity.instance.getFlickDirection());
         }
+
+
+
+        if (item == null) {
+            randomType = random.nextInt(numItems.length);
+
+            switch (randomType) {
+                case 1:
+                    item = new paperItem();
+                    break;
+                default:
+                    item = new defaultItem();
+                    break;
+            }
+        }
     }
 
     @Override
     public void onRender(Canvas canvas){
+        //shifted src rect here since size of all item sprites vary and needs to be constantly updated
+        _srcRect.set(0, 0, (int)item.getBitmap().getWidth(), (int)item.getBitmap().getWidth());
         //initial sprite pivot point is located at top left of image -> want to shift the rectangle containing image until pivot is centered
         //note to self: since item will be receiving position updates, destRect needs to calculate new position every frame -> put here since function is ran every frame
-        _dstRect.left = (int)getPosition().x - Sprite.getWidth() /2;
-        _dstRect.top = (int)getPosition().y - Sprite.getHeight() /2;
-        _dstRect.right = (int)getPosition().x + Sprite.getWidth() /2;
-        _dstRect.bottom = (int)getPosition().y + Sprite.getHeight()/2;
-        canvas.drawBitmap(Sprite, _srcRect, _dstRect, null);
+        _dstRect.left = (int)getPosition().x - item.getBitmap().getWidth() /2;
+        _dstRect.top = (int)getPosition().y - item.getBitmap().getHeight() /2;
+        _dstRect.right = (int)getPosition().x + item.getBitmap().getWidth() /2;
+        _dstRect.bottom = (int)getPosition().y + item.getBitmap().getHeight()/2;
+        canvas.drawBitmap(item.getBitmap(), _srcRect, _dstRect, null);
     }
 
     @Override
@@ -111,8 +130,5 @@ public class ItemEntity extends GameEntity{
         //default
     }
 
-    protected void get_ItemEnum(singleType.ID type)
-    {
-        //get item bitmap, size and other stuff
-    }
+
 }

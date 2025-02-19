@@ -16,8 +16,8 @@ public abstract class baseBox extends GameEntity {
     private final Bitmap binSprite; //parent base bin sprite
     //public Vector2 position;    //bin position; every child will be at different location so they got their own position; actually do i need this? its already extension of game entity, so it shld come with position variable right?
     //scruffidy scuffness, i have no idea what im doing lmao; is this even considered an abstract class
-    protected Rect spritePos;
-    protected Rect centeredSprite;
+    //protected Rect frameRect = new Rect();
+    protected Rect destRect = new Rect();   //every time children class enters constructor, refers to parent constructor to make new copy of destRect and bin bitmap
     protected final Paint label;
     public baseBox(){
         Bitmap binBitmap = BitmapFactory.decodeResource(GameActivity.instance.getResources(), R.drawable.bin);  //replace with default sprite thats not paper ball to make sure this class manages to init child items; in other words, for debugging
@@ -25,9 +25,6 @@ public abstract class baseBox extends GameEntity {
         //want to set to half size of image, so setting size after init image
         setSize(new Vector2((float)binBitmap.getWidth()/2,(float)binBitmap.getHeight()/2));
         binSprite = Bitmap.createScaledBitmap(binBitmap,(int) getSize().x,(int) getSize().y,true); //halved size of sprite here
-
-        spritePos = new Rect(0, 0, (int)getSize().x, (int)getSize().y);
-        centeredSprite = new Rect();
 
         label = new Paint();
         label.setTextSize(100.f);

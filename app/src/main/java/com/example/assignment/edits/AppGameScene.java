@@ -5,6 +5,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
 import com.example.assignment.R;
+import com.example.assignment.edits.box.baseBox;
+import com.example.assignment.edits.box.paperBox;
+import com.example.assignment.edits.box.plasticBox;
 import com.example.assignment.mgp2d.core.GameActivity;
 import com.example.assignment.mgp2d.core.GameEntity;
 import com.example.assignment.mgp2d.core.GameScene;
@@ -22,7 +25,8 @@ public class AppGameScene extends GameScene {
         Bitmap BackgroundBitmap = BitmapFactory.decodeResource(GameActivity.instance.getResources(), R.drawable.kyuu_pic);
         _backgroundBitmap = Bitmap.createScaledBitmap(BackgroundBitmap, screenWidth, screenHeight, true);
         _gameEntities.add(new ItemEntity());
-        _gameEntities.add(new TextRender(14117033, GameActivity.instance.getPointerCount()));
+        _gameEntities.add(new paperBox());
+        _gameEntities.add(new plasticBox());
     }
     @Override
     public void onUpdate(float dt) {

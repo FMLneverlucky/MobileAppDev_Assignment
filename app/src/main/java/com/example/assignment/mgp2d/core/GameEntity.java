@@ -28,4 +28,8 @@ public abstract class GameEntity {
     {
         return dstRect;
     }
+    public boolean checkCollision(Rect rect1, Rect rect2)
+    {
+        return Rect.intersects(rect1, rect2);
+    }
 }

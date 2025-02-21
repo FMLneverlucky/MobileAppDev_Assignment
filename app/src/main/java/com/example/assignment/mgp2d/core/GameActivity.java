@@ -57,6 +57,7 @@ package com.example.assignment.mgp2d.core;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -64,6 +65,8 @@ import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+
+import com.example.assignment.edits.BackDialogue;
 
 public class GameActivity extends FragmentActivity {
 
@@ -200,8 +203,6 @@ public class GameActivity extends FragmentActivity {
             _currentPointerID = pointerID;   //touch has been detected, tie touch reference in index to start of touch detection list
             initial_pointerPosition.x =  motionEvent.getX();
             initial_pointerPosition.y = motionEvent.getY();
-
-
         }
         else if (_currentPointerID == pointerID && (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP))
         {
@@ -258,7 +259,16 @@ public class GameActivity extends FragmentActivity {
     {
         currentDirection = newDirection;
     }
-//----------------------------end of pointer stuff--------------------------------------------------
+
+    public boolean checkTapCollision(Rect rect1)
+    {
+        MotionEvent motionEvent = getMotionEvent();
+        if (_currentPointerID != -1)
+            return rect1.contains((int)motionEvent.getX(), (int)motionEvent.getY());
+        //cant use initial
+        return false;
+    }
+    //----------------------------end of pointer stuff--------------------------------------------------
 
 //--------------------------------------double tap bs-----------------------------------------------
     protected boolean isTimerRunning = false; //flag to start/stop timer running between each tap
@@ -276,4 +286,5 @@ public class GameActivity extends FragmentActivity {
             isTimerRunning = false;
     }
 //-------------------------------------------double tap end-----------------------------------------
+
 }

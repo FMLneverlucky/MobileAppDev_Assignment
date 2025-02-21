@@ -72,10 +72,8 @@ public abstract class GameScene {
         //render pointer image if there is touch detected
         if (getPointerNum != -1)
             canvas.drawBitmap(pointerBmp,0,0,null);
-
         //i could technically use interface and implement for this pointer thing, but i never actually made a working one before and i dont dare kek
     }
-
 
     public abstract void scoreUpdate();
 }

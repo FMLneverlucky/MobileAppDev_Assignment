@@ -5,13 +5,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 
 import com.example.assignment.R;
 import com.example.assignment.edits.box.glassBox;
 import com.example.assignment.edits.box.metalBox;
 import com.example.assignment.edits.box.paperBox;
 import com.example.assignment.edits.box.plasticBox;
+import com.example.assignment.edits.itemTypes.pauseButton;
 import com.example.assignment.mgp2d.core.GameActivity;
 import com.example.assignment.mgp2d.core.GameEntity;
 import com.example.assignment.mgp2d.core.GameScene;
@@ -35,6 +35,7 @@ public class AppGameScene extends GameScene{
         _gameEntities.add(new plasticBox());
         _gameEntities.add(new metalBox());
         _gameEntities.add(new glassBox());
+        _gameEntities.add(new pauseButton());
     }
 
     //flag for render function to display score when game ends
@@ -63,6 +64,7 @@ public class AppGameScene extends GameScene{
             }*/
             entity.onUpdate(dt);
         }
+
     }
 
     @Override
@@ -81,7 +83,7 @@ public class AppGameScene extends GameScene{
 
 
     //------------------------------------------------------scoring stuff-------------------------------------------------------------
-    protected static float gameTimer = 30; //duration left until game ends
+    protected static float gameTimer = 100; //duration left until game ends
     protected int score = 0;
     private static float addToTime = 5;
 
@@ -91,7 +93,7 @@ public class AppGameScene extends GameScene{
         GameEntity itemObj = _gameEntities.get(0);
         for (int num = 1; num < _gameEntities.size(); num++)
         {
-            if (Rect.intersects(itemObj.getEntityRect(), _gameEntities.get(num).getEntityRect()))
+            if (itemObj.checkCollision(itemObj.getEntityRect(), _gameEntities.get(num).getEntityRect()))
             {
                 score += 1;
                 gameTimer += addToTime;

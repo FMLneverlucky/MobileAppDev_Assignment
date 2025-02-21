@@ -1,6 +1,7 @@
 package com.example.assignment.mgp2d.core;
 
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
 public abstract class GameEntity {
     protected Vector2 _position = new Vector2(0, 0);
@@ -22,5 +23,9 @@ public abstract class GameEntity {
 
     public abstract void onRender(Canvas canvas);
 
-    public abstract String getEntityClass();
+    protected Rect dstRect = new Rect();
+    public Rect getEntityRect()
+    {
+        return dstRect;
+    }
 }

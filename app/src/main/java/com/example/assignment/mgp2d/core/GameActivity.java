@@ -164,6 +164,7 @@ public class GameActivity extends FragmentActivity {
         GameScene.exitCurrent();
     }
 
+//---------------------------pointer stuff----------------------------------------------------------
     protected int _currentPointerID = -1; //start detecting touch when enter a scene, every scene should have a touch detector -> i mean there's event listeners but since this exists might as well use it
     //pointers is all part of motionEvent class, which is a singleton. having pointer count here means theres no need to make multiple pointer counters in different scenes
 
@@ -199,6 +200,8 @@ public class GameActivity extends FragmentActivity {
             _currentPointerID = pointerID;   //touch has been detected, tie touch reference in index to start of touch detection list
             initial_pointerPosition.x =  motionEvent.getX();
             initial_pointerPosition.y = motionEvent.getY();
+
+
         }
         else if (_currentPointerID == pointerID && (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP))
         {
@@ -255,4 +258,22 @@ public class GameActivity extends FragmentActivity {
     {
         currentDirection = newDirection;
     }
+//----------------------------end of pointer stuff--------------------------------------------------
+
+//--------------------------------------double tap bs-----------------------------------------------
+    protected boolean isTimerRunning = false; //flag to start/stop timer running between each tap
+    protected boolean isChainTap = false; //to identify if players action is connected
+    protected float chainTimer = 0; //timer that runs between taps
+    protected static final float timeBetweenTaps = 0; //constant value to reset timer
+    protected int numOfTaps = 0;
+    protected boolean chainTapAllowed = true;
+    protected void runTimer(float dt)
+    {
+        if (chainTimer > 0 && isTimerRunning)
+            chainTimer -= dt;
+        else if (chainTimer < 0)
+            //stop timer when overshoot duration to be considered chain tap
+            isTimerRunning = false;
+    }
+//-------------------------------------------double tap end-----------------------------------------
 }

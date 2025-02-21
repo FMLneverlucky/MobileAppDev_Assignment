@@ -13,10 +13,10 @@ public class metalBox extends baseBox {
         boxMetal = getBinSprite().copy(Bitmap.Config.ARGB_8888, false);
         //shift sprite to desired location: top mid
         setPosition(new Vector2((float) GameActivity.instance.getResources().getDisplayMetrics().widthPixels/2, 0));
-        destRect.left = (int)getPosition().x - boxMetal.getWidth()/2;
-        destRect.top = (int) getPosition().y - boxMetal.getHeight()/2;
-        destRect.right = (int)getPosition().x + boxMetal.getWidth()/2;
-        destRect.bottom = (int) getPosition().y + boxMetal.getHeight()/2;
+        dstRect.left = (int)getPosition().x - boxMetal.getWidth()/2;
+        dstRect.top = (int) getPosition().y - boxMetal.getHeight()/2;
+        dstRect.right = (int)getPosition().x + boxMetal.getWidth()/2;
+        dstRect.bottom = (int) getPosition().y + boxMetal.getHeight()/2;
     }
 
     @Override
@@ -28,8 +28,8 @@ public class metalBox extends baseBox {
         super.onRender(canvas);
         canvas.save();
         canvas.rotate(180, getPosition().x, getPosition().y);
-        canvas.drawBitmap(boxMetal, destRect.left, destRect.top, null);
-        canvas.drawText("metal", destRect.left + label.getTextSize(), destRect.top + label.getTextSize(), label);
+        canvas.drawBitmap(boxMetal, dstRect.left, dstRect.top, null);
+        canvas.drawText("metal", dstRect.left + label.getTextSize(), dstRect.top + label.getTextSize(), label);
         canvas.restore();
     }
 }

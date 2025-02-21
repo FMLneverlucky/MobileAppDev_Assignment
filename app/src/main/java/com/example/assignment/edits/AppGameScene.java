@@ -3,6 +3,9 @@ package com.example.assignment.edits;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 
 import com.example.assignment.R;
 import com.example.assignment.edits.box.glassBox;
@@ -15,7 +18,8 @@ import com.example.assignment.mgp2d.core.GameScene;
 
 import java.util.Vector;
 
-public class AppGameScene extends GameScene {
+public class AppGameScene extends GameScene{
+    //scene will be observing itemEntity to see when item hits boundary, so scene is observer in this situation
     private Bitmap _backgroundBitmap;
     Vector<GameEntity> _gameEntities = new Vector<>();
     @Override
@@ -34,6 +38,11 @@ public class AppGameScene extends GameScene {
     }
     @Override
     public void onUpdate(float dt) {
+        if (gameTimer < 0)  //lazy stop run condition
+            return;
+        else
+            gameTimer -= dt;
+
         GameActivity.instance.pointerUpdate();
         for (GameEntity entity :_gameEntities) {
             //toss flick direction to item update for position update
@@ -44,6 +53,10 @@ public class AppGameScene extends GameScene {
                 //current bug: when app starts, runs receive flick direction since get_direction is true by default. but since item doesnt actually update and hit screen boundary, get_direction is never reset to true and remains stuck at false state
             }*/
             entity.onUpdate(dt);
+            if (entity.getClass() == ItemEntity.class)
+            {
+                scoreUpdate();
+            }
         }
     }
 
@@ -53,5 +66,31 @@ public class AppGameScene extends GameScene {
         renderPointer(canvas);
         for (GameEntity entity :_gameEntities)
             entity.onRender(canvas);
+        Paint paint = new Paint();
+        paint.setTextSize(100);
+        paint.setColor(Color.parseColor("#000000"));
+        canvas.drawText(Float.toString(gameTimer), 25, 75, paint);
+    }
+
+
+    //------------------------------------------------------scoring stuff-------------------------------------------------------------
+    protected static float gameTimer = 30; //duration left until game ends
+    protected int score = 0;
+    private static float addToTime = 5;
+
+
+
+    public void scoreUpdate()
+    {
+        //first item in entity list is always itemEntity
+        GameEntity itemObj = _gameEntities.get(0);
+        for (int num = 1; num < _gameEntities.size(); num++)
+        {
+            if (Rect.intersects(itemObj.getEntityRect(), _gameEntities.get(num).getEntityRect()))
+            {
+                score += 1;
+                gameTimer += addToTime;
+            }
+        }
     }
 }

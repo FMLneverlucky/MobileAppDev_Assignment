@@ -45,11 +45,6 @@ public class TextRender extends GameEntity {
         }
     }
 
-    @Override
-    public String getEntityClass() {
-        return "TextRender";
-    }
-
     public String actionToString(int action)
     {
         switch (action)

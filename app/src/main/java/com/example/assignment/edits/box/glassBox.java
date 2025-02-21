@@ -13,10 +13,10 @@ public class glassBox extends baseBox {
         boxGlass = getBinSprite().copy(Bitmap.Config.ARGB_8888, false);
         //shift sprite to desired location: right mid
         setPosition(new Vector2((float) GameActivity.instance.getResources().getDisplayMetrics().widthPixels, (float)GameActivity.instance.getResources().getDisplayMetrics().heightPixels/2));
-        destRect.left = (int)getPosition().x - boxGlass.getWidth()/2;
-        destRect.top = (int) getPosition().y - boxGlass.getHeight()/2;
-        destRect.right = (int)getPosition().x + boxGlass.getWidth()/2;
-        destRect.bottom = (int) getPosition().y + boxGlass.getHeight()/2;
+        dstRect.left = (int)getPosition().x - boxGlass.getWidth()/2;
+        dstRect.top = (int) getPosition().y - boxGlass.getHeight()/2;
+        dstRect.right = (int)getPosition().x + boxGlass.getWidth()/2;
+        dstRect.bottom = (int) getPosition().y + boxGlass.getHeight()/2;
     }
 
     @Override
@@ -28,9 +28,9 @@ public class glassBox extends baseBox {
         super.onRender(canvas);
         canvas.save();
         canvas.rotate(-90, getPosition().x, getPosition().y);
-        canvas.translate(0, (float)destRect.top/4);
-        canvas.drawBitmap(boxGlass, destRect.left, destRect.top, null);
-        canvas.drawText("glass", destRect.left + label.getTextSize(), destRect.top + label.getTextSize(), label);
+        canvas.translate(0, (float)dstRect.top/4);
+        canvas.drawBitmap(boxGlass, dstRect.left, dstRect.top, null);
+        canvas.drawText("glass", dstRect.left + label.getTextSize(), dstRect.top + label.getTextSize(), label);
         canvas.restore();
     }
 }

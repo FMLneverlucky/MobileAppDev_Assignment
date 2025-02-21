@@ -13,10 +13,10 @@ public class plasticBox extends baseBox {
         boxPlastic = getBinSprite().copy(Bitmap.Config.ARGB_8888, false);
         //shift sprite to desired location: left mid
         setPosition(new Vector2(0, (float)GameActivity.instance.getResources().getDisplayMetrics().heightPixels/2));
-        destRect.left = (int)getPosition().x - boxPlastic.getWidth()/2;
-        destRect.top = (int) getPosition().y - boxPlastic.getHeight()/2;
-        destRect.right = (int)getPosition().x + boxPlastic.getWidth()/2;
-        destRect.bottom = (int) getPosition().y + boxPlastic.getHeight()/2;
+        dstRect.left = (int)getPosition().x - boxPlastic.getWidth()/2;
+        dstRect.top = (int) getPosition().y - boxPlastic.getHeight()/2;
+        dstRect.right = (int)getPosition().x + boxPlastic.getWidth()/2;
+        dstRect.bottom = (int) getPosition().y + boxPlastic.getHeight()/2;
 
     }
 
@@ -32,9 +32,9 @@ public class plasticBox extends baseBox {
         canvas.rotate(90, getPosition().x, getPosition().y);
         //want to show lesser of bin because screen width too small
         //major important note: when canvas is rotated, x and y axis is also rotated; YES LITERALLY THE ENTIRE ORIENTATION IS ROTATED; so yeah, translate added value to y because y is now inverse x axis and when not rotated, canvas shifted downwards from center
-        canvas.translate(0, (float)destRect.top/4);
-        canvas.drawBitmap(boxPlastic, destRect.left, destRect.top, null);
-        canvas.drawText("plastic", destRect.left + label.getTextSize(), destRect.top + label.getTextSize(), label);
+        canvas.translate(0, (float)dstRect.top/4);
+        canvas.drawBitmap(boxPlastic, dstRect.left, dstRect.top, null);
+        canvas.drawText("plastic", dstRect.left + label.getTextSize(), dstRect.top + label.getTextSize(), label);
         canvas.restore();   //return bitmap to original state so values wont be fucked for next rendering object
     }
 }

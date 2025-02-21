@@ -66,8 +66,6 @@ import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
-import com.example.assignment.edits.BackDialogue;
-
 public class GameActivity extends FragmentActivity {
 
     private static class UpdateThread extends Thread {

@@ -1,17 +1,19 @@
 package com.example.assignment.edits;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 
 import com.example.assignment.R;
 import com.example.assignment.edits.box.glassBox;
 import com.example.assignment.edits.box.metalBox;
 import com.example.assignment.edits.box.paperBox;
 import com.example.assignment.edits.box.plasticBox;
-import com.example.assignment.edits.itemTypes.pauseButton;
 import com.example.assignment.mgp2d.core.GameActivity;
 import com.example.assignment.mgp2d.core.GameEntity;
 import com.example.assignment.mgp2d.core.GameScene;
@@ -22,12 +24,14 @@ public class AppGameScene extends GameScene{
     //scene will be observing itemEntity to see when item hits boundary, so scene is observer in this situation
     private Bitmap _backgroundBitmap;
     Vector<GameEntity> _gameEntities = new Vector<>();
+    private Vibrator vibrator;
     @Override
     public void onCreate(){
         super.onCreate();
         int screenWidth = GameActivity.instance.getResources().getDisplayMetrics().widthPixels;
         int screenHeight = GameActivity.instance.getResources().getDisplayMetrics().heightPixels;
         Bitmap BackgroundBitmap = BitmapFactory.decodeResource(GameActivity.instance.getResources(), R.drawable.kyuu_pic);
+        vibrator = (Vibrator) GameActivity.instance.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
         _backgroundBitmap = Bitmap.createScaledBitmap(BackgroundBitmap, screenWidth, screenHeight, true);
         _gameEntities.add(new ItemEntity());
         //thrs prob a better way to do tis but brain struggled to render them at intended location already, am not going to squish my brain even more to come out wif hypothetical unreliable bs
@@ -44,10 +48,12 @@ public class AppGameScene extends GameScene{
     public void onUpdate(float dt) {
         if (gameTimer < 0)  //lazy stop run condition
         {
-            if (!_gameEntities.isEmpty())
+            if (!_gameEntities.isEmpty()) {
                 _gameEntities.clear(); //game ended, clear all entities
-            //display score on screen
-            gameEnd = true;
+                //display score on screen
+                gameEnd = true;
+                vibrator.vibrate(VibrationEffect.createOneShot(100,10));
+            }
             return;
         }
         else
@@ -73,17 +79,20 @@ public class AppGameScene extends GameScene{
         renderPointer(canvas);
         for (GameEntity entity :_gameEntities)
             entity.onRender(canvas);
-        Paint paint = new Paint();
-        paint.setTextSize(100);
-        paint.setColor(Color.parseColor("#000000"));
-        canvas.drawText(Float.toString(gameTimer), 25, 75, paint);
-        if (gameEnd)
-            canvas.drawText(Integer.toString(score), (float) GameActivity.instance.getResources().getDisplayMetrics().widthPixels /2,(float)GameActivity.instance.getResources().getDisplayMetrics().heightPixels/2, paint);
+        Paint timerPaint = new Paint();
+        timerPaint.setTextSize(100);
+        timerPaint.setColor(Color.parseColor("#000000"));
+        canvas.drawText(Float.toString(gameTimer), 25, 75, timerPaint);
+        if (gameEnd) {
+            Paint scorePaint = new Paint();
+            scorePaint.setTextSize(200);
+            canvas.drawText(Integer.toString(score), (float) GameActivity.instance.getResources().getDisplayMetrics().widthPixels / 2, (float) GameActivity.instance.getResources().getDisplayMetrics().heightPixels / 2, scorePaint);
+        }
     }
 
 
     //------------------------------------------------------scoring stuff-------------------------------------------------------------
-    protected static float gameTimer = 100; //duration left until game ends
+    protected static float gameTimer = 5; //duration left until game ends
     protected int score = 0;
     private static float addToTime = 5;
 

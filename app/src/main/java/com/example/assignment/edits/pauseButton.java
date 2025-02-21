@@ -1,13 +1,11 @@
-package com.example.assignment.edits.itemTypes;
+package com.example.assignment.edits;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.view.MotionEvent;
 
 import com.example.assignment.R;
-import com.example.assignment.edits.BackDialogue;
 import com.example.assignment.mgp2d.core.GameActivity;
 import com.example.assignment.mgp2d.core.GameEntity;
 import com.example.assignment.mgp2d.core.Vector2;
@@ -29,11 +27,11 @@ public class pauseButton extends GameEntity {
     @Override
     public void onUpdate(float dt) {
 
-        if (GameActivity.instance.checkTapCollision(dstRect) && !BackDialogue.isShowing())
+        if (GameActivity.instance.checkTapCollision(dstRect) && !pauseDialogue.isShowing())
         {
             //GameActivity.instance.finish(); //exit out of mgp2d using finish(); stop/pause game
-            BackDialogue backDialog = new BackDialogue();
-            backDialog.show(GameActivity.instance.getSupportFragmentManager(), "Back dialog");
+            pauseDialogue pauseDialog = new pauseDialogue();
+            pauseDialog.show(GameActivity.instance.getSupportFragmentManager(), "Back dialog");
         }
     }
 

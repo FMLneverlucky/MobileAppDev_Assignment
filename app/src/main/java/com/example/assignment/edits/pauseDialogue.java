@@ -9,7 +9,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.assignment.mgp2d.core.GameActivity;
 
-public class BackDialogue extends DialogFragment {
+public class pauseDialogue extends DialogFragment {
     private static boolean _isShowing = false;
     public static boolean isShowing() {return _isShowing;}
 

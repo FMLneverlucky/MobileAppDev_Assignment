@@ -36,10 +36,19 @@ public class AppGameScene extends GameScene{
         _gameEntities.add(new metalBox());
         _gameEntities.add(new glassBox());
     }
+
+    //flag for render function to display score when game ends
+    private static boolean gameEnd = false;
     @Override
     public void onUpdate(float dt) {
         if (gameTimer < 0)  //lazy stop run condition
+        {
+            if (!_gameEntities.isEmpty())
+                _gameEntities.clear(); //game ended, clear all entities
+            //display score on screen
+            gameEnd = true;
             return;
+        }
         else
             gameTimer -= dt;
 
@@ -66,6 +75,8 @@ public class AppGameScene extends GameScene{
         paint.setTextSize(100);
         paint.setColor(Color.parseColor("#000000"));
         canvas.drawText(Float.toString(gameTimer), 25, 75, paint);
+        if (gameEnd)
+            canvas.drawText(Integer.toString(score), (float) GameActivity.instance.getResources().getDisplayMetrics().widthPixels /2,(float)GameActivity.instance.getResources().getDisplayMetrics().heightPixels/2, paint);
     }
 
 
@@ -73,8 +84,6 @@ public class AppGameScene extends GameScene{
     protected static float gameTimer = 30; //duration left until game ends
     protected int score = 0;
     private static float addToTime = 5;
-
-
 
     public void scoreUpdate()
     {

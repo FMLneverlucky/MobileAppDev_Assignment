@@ -53,10 +53,6 @@ public class AppGameScene extends GameScene{
                 //current bug: when app starts, runs receive flick direction since get_direction is true by default. but since item doesnt actually update and hit screen boundary, get_direction is never reset to true and remains stuck at false state
             }*/
             entity.onUpdate(dt);
-            if (entity.getClass() == ItemEntity.class)
-            {
-                scoreUpdate();
-            }
         }
     }
 

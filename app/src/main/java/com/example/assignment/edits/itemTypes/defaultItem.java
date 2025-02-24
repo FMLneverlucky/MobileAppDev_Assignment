@@ -5,7 +5,6 @@ import android.graphics.BitmapFactory;
 
 import com.example.assignment.R;
 import com.example.assignment.mgp2d.core.GameActivity;
-import com.example.assignment.mgp2d.core.Vector2;
 
 public class defaultItem implements ItemType{
     private final Bitmap defaultSprite;
@@ -23,5 +22,9 @@ public class defaultItem implements ItemType{
     @Override
     public ID getIdNum() {
         return num;
+    }
+
+    public String item_getType() {
+        return "default";
     }
 }

@@ -6,17 +6,17 @@ import android.graphics.BitmapFactory;
 import com.example.assignment.R;
 import com.example.assignment.mgp2d.core.GameActivity;
 
-public class paperItem implements ItemType{
-
+public class metalItem implements ItemType{
+    @Override
     public String item_getType() {
-        return "paper";
+        return "metal";
     }
 
     private final Bitmap paperBitmap;
-    private final ID idNo = ID.paper;
-    public paperItem(){
-        Bitmap newBitmap = BitmapFactory.decodeResource(GameActivity.instance.getResources(), R.drawable.paperball);
-        paperBitmap = Bitmap.createScaledBitmap(newBitmap, (int) (newBitmap.getWidth()/2.5f), (int) (newBitmap.getHeight()/2.5f), true);
+    private final ID idNo = ID.metal;
+    public metalItem(){
+        Bitmap newBitmap = BitmapFactory.decodeResource(GameActivity.instance.getResources(), R.drawable.metal_can);
+        paperBitmap = Bitmap.createScaledBitmap(newBitmap, (int) (newBitmap.getWidth()/1.5f), (int) (newBitmap.getHeight()/1.5f), true);
     }
 
     @Override

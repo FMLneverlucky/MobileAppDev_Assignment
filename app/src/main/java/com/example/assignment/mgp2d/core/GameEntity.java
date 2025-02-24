@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 
 public abstract class GameEntity {
+    protected GameEntity entityType = null;
     protected Vector2 _position = new Vector2(0, 0);
     public Vector2 getPosition() { return _position.copy(); }
     public void setPosition(Vector2 position) { _position = position; }
@@ -31,5 +32,9 @@ public abstract class GameEntity {
     public boolean checkCollision(Rect rect1, Rect rect2)
     {
         return Rect.intersects(rect1, rect2);
+    }
+    public GameEntity getInstance()
+    {
+        return entityType;
     }
 }

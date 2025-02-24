@@ -14,6 +14,7 @@ import com.example.assignment.edits.box.glassBox;
 import com.example.assignment.edits.box.metalBox;
 import com.example.assignment.edits.box.paperBox;
 import com.example.assignment.edits.box.plasticBox;
+import com.example.assignment.edits.itemTypes.ItemType;
 import com.example.assignment.mgp2d.core.GameActivity;
 import com.example.assignment.mgp2d.core.GameEntity;
 import com.example.assignment.mgp2d.core.GameScene;
@@ -39,22 +40,23 @@ public class AppGameScene extends GameScene{
         _gameEntities.add(new plasticBox());
         _gameEntities.add(new metalBox());
         _gameEntities.add(new glassBox());
-        _gameEntities.add(new pauseButton());
     }
 
     //flag for render function to display score when game ends
     private static boolean gameEnd = false;
+    private static boolean isMenuButtonShowing = false;
     @Override
     public void onUpdate(float dt) {
         if (gameTimer < 0)  //lazy stop run condition
         {
-            if (!_gameEntities.isEmpty()) {
+            if (!_gameEntities.isEmpty() && !isMenuButtonShowing) {
                 _gameEntities.clear(); //game ended, clear all entities
                 //display score on screen
                 gameEnd = true;
                 vibrator.vibrate(VibrationEffect.createOneShot(100,10));
+                _gameEntities.add(new toMenuButton());
+                isMenuButtonShowing = true;
             }
-            return;
         }
         else
             gameTimer -= dt;
@@ -106,6 +108,7 @@ public class AppGameScene extends GameScene{
             {
                 score += 1;
                 gameTimer += addToTime;
+                break;
             }
         }
     }

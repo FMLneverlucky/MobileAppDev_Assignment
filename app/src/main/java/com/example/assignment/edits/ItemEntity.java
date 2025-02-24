@@ -4,7 +4,10 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 
 import com.example.assignment.edits.itemTypes.defaultItem;
+import com.example.assignment.edits.itemTypes.glassItem;
+import com.example.assignment.edits.itemTypes.metalItem;
 import com.example.assignment.edits.itemTypes.paperItem;
+import com.example.assignment.edits.itemTypes.plasticItem;
 import com.example.assignment.mgp2d.core.GameActivity;
 import com.example.assignment.mgp2d.core.GameEntity;
 import com.example.assignment.mgp2d.core.GameScene;
@@ -15,16 +18,13 @@ import com.example.assignment.edits.itemTypes.ItemType;
 import java.util.Random;
 
 public class ItemEntity extends GameEntity{
-    //itemEntity is subject of observation and will send flag when item hits boundary out of class
     private static Rect _srcRect;    //source rectangle -> covers the relevant area in sprite image (in context of animated sprite)
     //protected static Rect _dstRect;    //destination rectangle -> rectangle that reside in screen
     private static final int speed = 400; //speed of position update
-    private ItemType item = null;
+    protected ItemType item = null;
 
     ItemType.ID[] numItems = ItemType.ID.values();
     Random random = new Random();
-    private static int randomType;
-    private static boolean updateScore = false;
 
     public ItemEntity(){
         //spawn position
@@ -80,7 +80,7 @@ public class ItemEntity extends GameEntity{
     @Override
     public void onRender(Canvas canvas){
         //shifted src rect here since size of all item sprites vary and needs to be constantly updated
-        _srcRect.set(0, 0, (int)item.getBitmap().getWidth(), (int)item.getBitmap().getWidth());
+        _srcRect.set(0, 0, item.getBitmap().getWidth(), item.getBitmap().getWidth());
         //initial sprite pivot point is located at top left of image -> want to shift the rectangle containing image until pivot is centered
         //note to self: since item will be receiving position updates, destRect needs to calculate new position every frame -> put here since function is ran every frame
         dstRect.left = (int)getPosition().x - item.getBitmap().getWidth() /2;
@@ -121,20 +121,30 @@ public class ItemEntity extends GameEntity{
     private void randomizeItem()
     {
         if (item == null) {
-            randomType = random.nextInt(numItems.length);
+            int randomType = random.nextInt(numItems.length);
 
             switch (randomType) {
                 case 1:
                     item = new paperItem();
                     break;
                 case 2:
+                    item = new plasticItem();
                     break;
                 case 3:
+                    item = new metalItem();
+                    break;
+                case 4:
+                    item = new glassItem();
                     break;
                 default:
                     item = new defaultItem();
                     break;
             }
         }
+    }
+
+    public String returnType()
+    {
+        return item.item_getType();
     }
 }

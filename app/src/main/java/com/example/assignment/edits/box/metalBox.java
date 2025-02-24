@@ -7,6 +7,11 @@ import com.example.assignment.mgp2d.core.GameActivity;
 import com.example.assignment.mgp2d.core.Vector2;
 
 public class metalBox extends baseBox {
+    @Override
+    public String box_getType() {
+        return "metal";
+    }
+
     private final Bitmap boxMetal;
 
     public metalBox(){

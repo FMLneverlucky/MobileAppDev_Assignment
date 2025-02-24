@@ -165,7 +165,7 @@ public class GameActivity extends FragmentActivity {
         GameScene.exitCurrent();
     }
 
-//---------------------------pointer stuff----------------------------------------------------------
+//---------------------------pointer stuff-----------------------------------
     protected int _currentPointerID = -1; //start detecting touch when enter a scene, every scene should have a touch detector -> i mean there's event listeners but since this exists might as well use it
     //pointers is all part of motionEvent class, which is a singleton. having pointer count here means theres no need to make multiple pointer counters in different scenes
 

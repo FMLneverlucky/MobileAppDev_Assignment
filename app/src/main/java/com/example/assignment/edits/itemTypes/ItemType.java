@@ -20,5 +20,4 @@ public abstract class ItemType {
     }
 
     public abstract String get_itemType();
-
 }

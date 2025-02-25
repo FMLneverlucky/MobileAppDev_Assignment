@@ -6,6 +6,7 @@ import android.graphics.Rect;
 public abstract class GameEntity {
     protected String entityType = "";
     protected Vector2 _position = new Vector2(0, 0);
+
     public Vector2 getPosition() { return _position.copy(); }
     public void setPosition(Vector2 position) { _position = position; }
     protected Vector2 size = new Vector2(0, 0);

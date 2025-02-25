@@ -7,11 +7,6 @@ import com.example.assignment.mgp2d.core.GameActivity;
 import com.example.assignment.mgp2d.core.Vector2;
 
 public class metalBox extends baseBox {
-    @Override
-    public String box_getType() {
-        return "metal";
-    }
-
     private final Bitmap boxMetal;
 
     public metalBox(){
@@ -22,6 +17,7 @@ public class metalBox extends baseBox {
         dstRect.top = (int) getPosition().y - boxMetal.getHeight()/2;
         dstRect.right = (int)getPosition().x + boxMetal.getWidth()/2;
         dstRect.bottom = (int) getPosition().y + boxMetal.getHeight()/2;
+        setEntityType("metal");
     }
 
     @Override

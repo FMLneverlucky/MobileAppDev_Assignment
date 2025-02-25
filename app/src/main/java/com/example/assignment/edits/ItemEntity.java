@@ -33,6 +33,7 @@ public class ItemEntity extends GameEntity{
         //below this comment is meant for animated sprite bits (which imm not using ahaaaaaa)
         _srcRect = new Rect(); //rmb to reduce image size to desired scale here too
         randomizeItem();
+        returnEntityType();
     }
 
     @Override
@@ -74,7 +75,7 @@ public class ItemEntity extends GameEntity{
         }
 
         randomizeItem();
-
+        returnEntityType();
     }
 
     @Override
@@ -142,8 +143,8 @@ public class ItemEntity extends GameEntity{
         }
     }
 
-    public String returnType()
+    public void returnEntityType()    //sets n gets item entity type
     {
-        return item.get_itemType();
+        setEntityType(item.get_itemType());
     }
 }

@@ -7,11 +7,6 @@ import com.example.assignment.mgp2d.core.GameActivity;
 import com.example.assignment.mgp2d.core.Vector2;
 
 public class glassBox extends baseBox {
-    @Override
-    public String box_getType() {
-        return "glass";
-    }
-
     private final Bitmap boxGlass;
 
     public glassBox(){
@@ -22,6 +17,7 @@ public class glassBox extends baseBox {
         dstRect.top = (int) getPosition().y - boxGlass.getHeight()/2;
         dstRect.right = (int)getPosition().x + boxGlass.getWidth()/2;
         dstRect.bottom = (int) getPosition().y + boxGlass.getHeight()/2;
+        setEntityType("glass");
     }
 
     @Override

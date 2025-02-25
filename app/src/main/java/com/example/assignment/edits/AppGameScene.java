@@ -95,9 +95,9 @@ public class AppGameScene extends GameScene{
 
     //----------------------scoring stuff------------------------
     private static final float initialTimer = 5;
-    protected static float gameTimer = 5; //duration left until game ends
+    protected static float gameTimer = 10; //duration left until game ends
     protected static int score = 0;
-    private static final float addToTime = 1;
+    private static final float addToTime = 2;
 
     public void scoreUpdate()
     {
@@ -107,10 +107,12 @@ public class AppGameScene extends GameScene{
         {
             if (itemObj.checkCollision(itemObj.getEntityRect(), _gameEntities.get(num).getEntityRect()))
             {
-
-                score += 1;
-                gameTimer += addToTime;
-                break;
+                if (itemObj.getEntityType().equals(_gameEntities.get(num).getEntityType())) //award point if item goes to right bin
+                {
+                    score += 1;
+                    gameTimer += addToTime;
+                }
+                break; //item reached a bin on the screen, stop checking other bins
             }
         }
     }

@@ -38,6 +38,4 @@ public abstract class baseBox extends GameEntity {
     public Bitmap getBinSprite() {
         return binSprite;   //going to use this so each child class can reference and render this bitmap below their category image sprite
     }
-
-    public abstract String box_getType();
 }

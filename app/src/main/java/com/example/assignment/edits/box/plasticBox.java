@@ -7,11 +7,6 @@ import com.example.assignment.mgp2d.core.GameActivity;
 import com.example.assignment.mgp2d.core.Vector2;
 
 public class plasticBox extends baseBox {
-    @Override
-    public String box_getType() {
-        return "plastic";
-    }
-
     private final Bitmap boxPlastic;
 
     public plasticBox(){
@@ -22,7 +17,7 @@ public class plasticBox extends baseBox {
         dstRect.top = (int) getPosition().y - boxPlastic.getHeight()/2;
         dstRect.right = (int)getPosition().x + boxPlastic.getWidth()/2;
         dstRect.bottom = (int) getPosition().y + boxPlastic.getHeight()/2;
-
+        setEntityType("plastic");
     }
 
     @Override

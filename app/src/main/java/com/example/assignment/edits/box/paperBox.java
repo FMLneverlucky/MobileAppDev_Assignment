@@ -7,12 +7,6 @@ import com.example.assignment.mgp2d.core.GameActivity;
 import com.example.assignment.mgp2d.core.Vector2;
 
 public class paperBox extends baseBox {
-    @Override
-    public String box_getType() {
-        return "paper";
-    }
-
-    private static final String type = "paper";
     private final Bitmap boxPaper;
 
     public paperBox(){
@@ -25,6 +19,7 @@ public class paperBox extends baseBox {
         dstRect.top = (int) getPosition().y - boxPaper.getHeight()/2;
         dstRect.right = (int)getPosition().x + boxPaper.getWidth()/2;
         dstRect.bottom = (int) getPosition().y + boxPaper.getHeight()/2;
+        setEntityType("paper");
     }
 
     @Override

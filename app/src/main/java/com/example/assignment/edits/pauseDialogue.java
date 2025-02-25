@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.assignment.mgp2d.core.GameActivity;
+import com.example.assignment.mgp2d.core.GameScene;
 
 public class pauseDialogue extends DialogFragment {
     private static boolean _isShowing = false;
@@ -19,7 +20,13 @@ public class pauseDialogue extends DialogFragment {
         GameActivity.instance.setTimeScale(0); //pause the game
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("Paused");
-        builder.setPositiveButton("Return to main menu", ((dialog, which) -> GameActivity.instance.finish()));
+        builder.setPositiveButton("Return to main menu", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                GameActivity.instance.finish();
+                GameScene.getCurrent().resetGame(); //idk how to make game reset every time return to menu so am doing scuff :D
+            }
+        });
         builder.setNegativeButton("Resume", null);
         return builder.create();
     } //build dialog to be contained in dialogFragment

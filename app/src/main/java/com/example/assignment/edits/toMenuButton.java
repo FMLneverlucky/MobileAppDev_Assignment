@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import com.example.assignment.mgp2d.core.GameActivity;
 import com.example.assignment.mgp2d.core.GameEntity;
 
+import com.example.assignment.mgp2d.core.GameScene;
 import com.example.assignment.mgp2d.core.Vector2;
 
 public class toMenuButton extends GameEntity{
@@ -21,6 +22,8 @@ public class toMenuButton extends GameEntity{
         {
             //exit to menu
             GameActivity.instance.finish();
+            //reset game so when enter game again, start new game
+            GameScene.getCurrent().resetGame();
         }
     }
 

@@ -96,7 +96,6 @@ public class ItemEntity extends GameEntity{
 
     public boolean screenBoundaryCollision()
     {
-
         //returns false by default unless item reaches screen boundary
         //checking according to order: left, right, up, down
         if (dstRect.left < 0||
@@ -145,6 +144,6 @@ public class ItemEntity extends GameEntity{
 
     public String returnType()
     {
-        return item.item_getType();
+        return item.get_itemType();
     }
 }

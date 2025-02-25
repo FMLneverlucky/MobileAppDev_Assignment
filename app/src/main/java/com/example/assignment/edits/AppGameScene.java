@@ -14,7 +14,6 @@ import com.example.assignment.edits.box.glassBox;
 import com.example.assignment.edits.box.metalBox;
 import com.example.assignment.edits.box.paperBox;
 import com.example.assignment.edits.box.plasticBox;
-import com.example.assignment.edits.itemTypes.ItemType;
 import com.example.assignment.mgp2d.core.GameActivity;
 import com.example.assignment.mgp2d.core.GameEntity;
 import com.example.assignment.mgp2d.core.GameScene;
@@ -40,6 +39,7 @@ public class AppGameScene extends GameScene{
         _gameEntities.add(new plasticBox());
         _gameEntities.add(new metalBox());
         _gameEntities.add(new glassBox());
+        _gameEntities.add(new pauseButton());
     }
 
     //flag for render function to display score when game ends
@@ -93,10 +93,11 @@ public class AppGameScene extends GameScene{
     }
 
 
-    //------------------------------------------------------scoring stuff-------------------------------------------------------------
+    //----------------------scoring stuff------------------------
+    private static final float initialTimer = 5;
     protected static float gameTimer = 5; //duration left until game ends
-    protected int score = 0;
-    private static float addToTime = 5;
+    protected static int score = 0;
+    private static final float addToTime = 1;
 
     public void scoreUpdate()
     {
@@ -106,10 +107,29 @@ public class AppGameScene extends GameScene{
         {
             if (itemObj.checkCollision(itemObj.getEntityRect(), _gameEntities.get(num).getEntityRect()))
             {
+
                 score += 1;
                 gameTimer += addToTime;
                 break;
             }
         }
+    }
+
+    public void resetGame() //reset game state to initially start
+    {
+        //remove end game to menu button from entity list
+        _gameEntities.clear();  //since at end game should only have to menu button, can just use clear function (totally not because im lazy to check through the list)
+        //reset score, timer and boolean states to initial state
+        score = 0;
+        gameTimer = initialTimer;
+        isMenuButtonShowing = false;
+        gameEnd = false;    //remove score render from screen
+        //add back start game entities back into entity list
+        _gameEntities.add(new ItemEntity());
+        _gameEntities.add(new paperBox());
+        _gameEntities.add(new plasticBox());
+        _gameEntities.add(new metalBox());
+        _gameEntities.add(new glassBox());
+        _gameEntities.add(new pauseButton());
     }
 }

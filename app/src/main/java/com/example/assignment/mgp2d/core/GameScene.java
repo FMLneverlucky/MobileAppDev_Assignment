@@ -76,4 +76,6 @@ public abstract class GameScene {
     }
 
     public abstract void scoreUpdate();
+
+    public abstract void resetGame();
 }
